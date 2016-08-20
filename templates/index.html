@@ -4,11 +4,22 @@
 
   <div class="container">
     <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
+      <div class="one-half column" id="description">
         <h4>Tongue</h4>
         <p>A vocabulary builder for language learners</p>
+      </div>
+      <div class="one-half column" id="interaction">
+        <div class="input-wrapper">
+          <input type="text" placeholder="a wikipedia article title">
+        </div>
+        <ul id="urls-list">
+        </ul>
       </div>
     </div>
   </div>
 
 {% endblock %}
+
+{% block js %}
+  <script src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+{% endblock js %}

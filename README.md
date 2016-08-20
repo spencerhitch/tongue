@@ -14,3 +14,14 @@ Tongue proposes that the bottom 20% of words are going to be specific to what th
 * Analyze the word occurances in the target language articles and compare with occurances in a general corpus for target language
 * Yield a list of interesting words that occur disproportionately relative to the user's interests
 
+###Notes
+* Version 0.0.0 is built only to support English speaking Spanish learners
+* get the sql dumps of English wikipedia articles, make a python pkl with:
+  ```
+  {English_Article_Title : Spanish_Version_Link}
+  ```
+* Freq anal data of spanish lang corpus
+* User creates list and hits 'process'
+* server-side py html.GETs every article, tokenizes, frequency analysis (freqAnal)
+* compare user's freqAnal w/ freqAnal of large spanish language corpus (stored on server)
+* 

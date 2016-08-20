@@ -17,6 +17,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 
 </head>
 <body>
@@ -24,6 +25,10 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   {% block body %}{% endblock %}
+
+  <!-- JS 
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  {% block js %}{% endblock %}
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
