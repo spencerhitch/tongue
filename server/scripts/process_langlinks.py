@@ -1,11 +1,20 @@
 import sqlite3, json
+import string
 
 page_items = {}
 es_items = {}
 result = {}
+alpha = string.ascii_lowercase
 
 decoded = ""
 
+# Fill results dictionary with two letter character combos
+for letter0 in alpha:
+    for letter1 in alpha:
+        alpha_entry = letter0 + letter1
+        result[alpha_entry] = {}
+
+#Open EnglishWiki pages and get their pageids and titles
 with open("../data/enwiki-20160801-page.sql", 'rb') as page_db:
     for line in page_db:
         decoded = decoded + line.decode('iso-8859-1')
@@ -15,6 +24,8 @@ with open("../data/enwiki-20160801-page.sql", 'rb') as page_db:
             page_items[w_split[0]] = w_split[2].replace(" ", "_")
 
 
+# Open the language links from all EnglishWiki entries, extract the 
+# spanish titles and associated english lanugae pageids
 with open("../data/enwiki-20160801-langlinks.sql", 'rb') as lang_db:
     lang_db = lang_db.read().decode('iso-8859-1')
     for w in lang_db.split("),("):
@@ -23,15 +34,18 @@ with open("../data/enwiki-20160801-langlinks.sql", 'rb') as lang_db:
             if len(w_split) >= 3:
                 es_items[w_split[0]] = w_split[2].replace(" ", "_")
 
+# Because corresponding pageids, we iterate through our keys and
 for key in es_items.keys():
     try:
-        result[page_items[key]] = es_items[key]
+        alpha_key = page_items[key][1:3].lower()
+        result_alpha = result[alpha_key]
+        result_alpha[page_items[key]] = es_items[key]
     except:
         continue
 
-print(list(result)[0:150])
-
-with open('../data/en_es.json', 'w') as writefile:
-    json.dump(result, writefile)
+for key in result.keys():
+  url = '../data/en_es/' + key + '.json'
+  with open(url, 'w') as writefile:
+    json.dump(result[key], writefile)
 
 

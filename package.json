@@ -4,7 +4,8 @@
   "description": "A vocabulary builder for language learners",
   "main": "static/js/bundle.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "browserify static/js/index.js -c > static/js/bundle.js"
   },
   "author": "Spencer Hitchcock",
   "license": "ISC",

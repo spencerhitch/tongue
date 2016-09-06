@@ -7,17 +7,23 @@ require('typeahead.js');
 
 /* General */
 
-var titles = [];
+var titles = {};
 
 var $input = $('#interaction input');
 var $articles_list = $('#articles-list');
 
-$(function() {
-  $.getJSON('/static/js/en_es.json', function(data) {
-    titles = data;
-    loadInput();
-    update();
-  });
+$input.on("keyup", function(e) {
+  var input_value = $input.val();
+  console.log(input_value);
+  if (input_value.length == 2) {
+    var alpha = $input.val().toLowerCase();
+    var url = 'static/js/en_es/' + alpha + ".json";
+    $.getJSON(url, function(data) {
+      titles = data;
+      loadInput();
+      update();
+    });
+  }
 });
 
 var update = function() {
