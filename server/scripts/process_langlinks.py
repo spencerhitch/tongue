@@ -21,8 +21,8 @@ with open("../data/enwiki-20160801-page.sql", 'rb') as page_db:
     for w in decoded.split("),("):
         w_split = w.split(',')
         if len(w_split) >= 3:
-            page_items[w_split[0]] = w_split[2].replace(" ", "_")
-
+            title = w_split[2].replace(" ", "_")
+            page_items[w_split[0]] = title[1:len(title)-2]
 
 # Open the language links from all EnglishWiki entries, extract the 
 # spanish titles and associated english lanugae pageids
@@ -32,12 +32,12 @@ with open("../data/enwiki-20160801-langlinks.sql", 'rb') as lang_db:
         if "'es'" in w and "Categor" not in w:
             w_split = w.split(',')
             if len(w_split) >= 3:
-                es_items[w_split[0]] = w_split[2].replace(" ", "_")
-
+                title = w_split[2].replace(" ", "_")
+                es_items[w_split[0]] = title[1:len(title)-2]
 # Because corresponding pageids, we iterate through our keys and
 for key in es_items.keys():
     try:
-        alpha_key = page_items[key][1:3].lower()
+        alpha_key = page_items[key][0:2].lower()
         result_alpha = result[alpha_key]
         result_alpha[page_items[key]] = es_items[key]
     except:

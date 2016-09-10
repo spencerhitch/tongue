@@ -9,8 +9,9 @@ require('typeahead.js');
 
 var titles = {};
 
-var $input = $('#interaction input');
-var $articles_list = $('#articles-list');
+var $input = $('#article_input');
+var $form = $('#input_form');
+var $articles_list = $('#articles_list');
 
 $input.on("keyup", function(e) {
   if ($input.val().length >= 2 && Object.keys(titles).length == 0) {
@@ -29,6 +30,18 @@ $input.on("keyup", function(e) {
   } else {
     update();
   }
+});
+
+$form.submit(function(e) {
+  var res = unsanitizeTitle($input.val());
+  var new_li = "<li id='" + res + "'>" + $input.val() + " <button>X</button></li>";
+  $articles_list.append(new_li);
+  $("#" + res + ">button").click(function(e) {
+    $("#" + res).remove();
+  });
+  console.log("Submitted input: ", res);
+  $input.typeahead('val', '');
+  e.preventDefault();
 });
 
 var update = function() {
@@ -50,8 +63,12 @@ var loadInput = function() {
   });
 }
 
-var key_sanitizer = function(key){
-  return key.substring(1,key.length-2).replace(/_/g, " ");
+var sanitizeTitle = function(title){
+  return title.substring(1,title.length-2).replace(/_/g, " ");
+}
+
+var unsanitizeTitle = function(title){
+  return title.replace(/ /g, "_");
 }
 
 var inputMatcher = function(strs) {
@@ -65,7 +82,7 @@ var inputMatcher = function(strs) {
     var substrMatches = []; // Substring of
 
     $.each(strs, function(key, value) {
-      key = key_sanitizer(key);
+      key = sanitizeTitle(key);
       if (equalRegex.test(removeDiacritics(key))) {
         equalMatches.push(key);
       } else if (startRegex.test(removeDiacritics(key))) {
