@@ -15,7 +15,6 @@ var $articles_list = $('#articles_list');
 
 $input.on("keyup", function(e) {
   if ($input.val().length >= 2 && Object.keys(titles).length == 0) {
-    console.log("if: ", $input.val());
     var alpha = $input.val().substring(0,2).toLowerCase();
     var url = 'static/js/en_es/' + alpha + ".json";
     $.getJSON(url, function(data) {
@@ -24,7 +23,6 @@ $input.on("keyup", function(e) {
       update();
     });
   } else if ($input.val().length < 2) {
-    console.log("else if: ", $input.val());
     titles = {};
     resetInput();
   } else {
@@ -33,16 +31,26 @@ $input.on("keyup", function(e) {
 });
 
 $form.submit(function(e) {
-  var res = unsanitizeTitle($input.val());
-  var new_li = "<li id='" + res + "'>" + $input.val() + " <button>X</button></li>";
-  $articles_list.append(new_li);
-  $("#" + res + ">button").click(function(e) {
-    $("#" + res).remove();
-  });
-  console.log("Submitted input: ", res);
-  $input.typeahead('val', '');
   e.preventDefault();
+  if (isMatchingTitle($input.val())) {
+    console.log($input.typeahead());
+    addListItem($input.val());
+    $input.typeahead('val', '');
+  } 
 });
+
+var isMatchingTitle = function(title) {
+  return true;
+}
+
+var addListItem = function(title) {
+  var id = unsanitizeTitle(title);
+  var li = "<li id='" + id + "'>" + title + " <button>X</button></li>";
+  $articles_list.append(li);
+  $("#" + id + ">button").click(function(e) {
+    $("#" + id).remove();
+  });
+}
 
 var update = function() {
   $input.typeahead('val', $input.val());
@@ -64,7 +72,7 @@ var loadInput = function() {
 }
 
 var sanitizeTitle = function(title){
-  return title.substring(1,title.length-2).replace(/_/g, " ");
+  return title.replace(/_/g, " ");
 }
 
 var unsanitizeTitle = function(title){
@@ -93,6 +101,7 @@ var inputMatcher = function(strs) {
     });
 
     cb(equalMatches.concat(startMatches).concat(substrMatches));
+//    cb(equalMatches.concat(startMatches));
   };
 }
 
