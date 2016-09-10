@@ -32,19 +32,25 @@ $input.on("keyup", function(e) {
 
 $form.submit(function(e) {
   e.preventDefault();
-  if (isMatchingTitle($input.val())) {
-    console.log($input.typeahead());
-    addListItem($input.val());
+  var title = "" 
+  if ($(".tt-hint").val()){
+    title =  $(".tt-hint").val();
+  } else {
+    title = $(".tt-suggestion").first().text();
+  }
+  if (isMatchingTitle(title)) {
+    addListItem(title);
     $input.typeahead('val', '');
   } 
 });
 
 var isMatchingTitle = function(title) {
-  return true;
+  if (title.length > 0) return true;
+  else return false;
 }
 
 var addListItem = function(title) {
-  var id = unsanitizeTitle(title);
+  var id = stripTitle(title);
   var li = "<li id='" + id + "'>" + title + " <button>X</button></li>";
   $articles_list.append(li);
   $("#" + id + ">button").click(function(e) {
@@ -77,6 +83,11 @@ var sanitizeTitle = function(title){
 
 var unsanitizeTitle = function(title){
   return title.replace(/ /g, "_");
+}
+
+var stripTitle = function(title){
+  title = title.replace(/ /g, "_");
+  return title.replace(/[.,\/#!$%\^&\*;:{}=\-`~()]/g, "")
 }
 
 var inputMatcher = function(strs) {
