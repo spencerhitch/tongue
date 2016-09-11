@@ -41,6 +41,19 @@ $form.submit(function(e) {
   if (isMatchingTitle(title)) {
     addListItem(title);
     $input.typeahead('val', '');
+    $.ajax({
+      url: '/addArticle',
+      data: {
+        title: unsanitizeTitle(title)
+      },
+      type: 'POST',
+      success: function(r){
+        console.log(r);
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
   } 
 });
 
