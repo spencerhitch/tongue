@@ -7,6 +7,8 @@ directory = "../data/en_es/"
 results = {}
 dictionary = {}
 num_documents = 0
+results["dictionary"] = dictionary
+results["num_documents"] = num_documents
 
 def urlEncodeNonAscii(b):
     return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b.decode('utf-8'))
@@ -53,15 +55,15 @@ for filename in os.listdir(directory):
                 title = title.replace("\\'", "'")
                 contents = getArticleContents(title)
                 if contents:
-                    print("   ## Contents found: ", title, "#")
+                    print("   ## Contents found: ", title, "##")
                     processText(contents)
-                    print("   ## Text Processed: ", title, "#")
+                    print("   ## Text Processed: ", title, "##")
                     num_documents += 1
-                    print("  ### Article complete: ", title, "##")
-    print(" #### File complete: ", filename, "###")
+                    print("  ### Article complete: ", title, "###")
+    print(" #### File complete: ", filename, "####")
     break
 
 with open('palabras.json', 'w') as writefile:
     json.dump(results, writefile)
-    print("##### Dumping to json ####")
+    print("##### Dumping to json #####")
 

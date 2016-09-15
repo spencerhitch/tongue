@@ -47,7 +47,7 @@ print("finished with page: ", len(page_items))
 with open("../data/enwiki-20160801-langlinks.sql", 'rb') as lang_db:
     lang_db = lang_db.read()
     for w in lang_db.split(b"),("):
-        if b"'es'" in w and b"Categor" not in w and b"Usario" not in w and b"Ayuda" not in w:
+        if b"'es'" in w and b"Categor" not in w and b"Usuario" not in w and b"Ayuda" not in w:
             w_split = w.split(b",")
             if len(w_split) >= 3:
                 i = 2
