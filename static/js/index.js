@@ -12,6 +12,9 @@ var titles = {};
 var $input = $('#article_input');
 var $form = $('#input_form');
 var $articles_list = $('#articles_list');
+var articles = {}
+
+var $generateButton = $('#generate_button');
 
 $input.on("keyup", function(e) {
   if ($input.val().length >= 2 && Object.keys(titles).length == 0) {
@@ -39,22 +42,41 @@ $form.submit(function(e) {
     title = $(".tt-suggestion").first().text();
   }
   if (isMatchingTitle(title)) {
-    addListItem(title);
+    target_title = titles[unsanitizeTitle(title)];
+    console.log(target_title);
     $input.typeahead('val', '');
     $.ajax({
       url: '/addArticle',
       data: {
-        title: unsanitizeTitle(title)
+        title: target_title
       },
       type: 'POST',
       success: function(r){
-        console.log(r);
+        articles[title] = r;
+        addListItem(title);
       },
       error: function(e){
         console.log(e);
       }
     });
   } 
+});
+
+$generateButton.click(function (e) {
+  $.ajax({
+    url: '/generate',
+    data: {
+      articles: JSON.stringify(articles)
+    },
+    type: 'POST',
+    success: function(r) {
+      console.log(r);
+//      listGeneratedWords(r);
+    },
+    error: function(e) {
+      console.log(e);
+    }
+  });
 });
 
 var isMatchingTitle = function(title) {
