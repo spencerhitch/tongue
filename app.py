@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import nltk, urllib, json, string, re
+import nltk, urllib, json, re
 from urllib import parse as urlparse
 from nltk import word_tokenize
 from nltk.corpus import stopwords

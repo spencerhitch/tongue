@@ -5,6 +5,7 @@ page_items = {}
 es_items = {}
 result = {}
 alpha = string.ascii_lowercase
+total = 0
 
 decoded = ""
 
@@ -69,6 +70,7 @@ for key in es_items.keys():
         alpha_key = page_items[key][0:2].lower()
         result_alpha = result[alpha_key]
         result_alpha[page_items[key]] = es_items[key]
+        total += 1
     except:
         continue
 
@@ -76,3 +78,5 @@ for key in result.keys():
   url = '../data/en_es/' + key + '.json'
   with open(url, 'w') as writefile:
     json.dump(result[key], writefile)
+
+print("Finished storing JSON, total pairs: ", total)
