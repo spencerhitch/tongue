@@ -24,4 +24,8 @@ Tongue proposes that the bottom 20% of words are going to be specific to what th
 * User creates list and hits 'process'
 * server-side py html.GETs every article, tokenizes, frequency analysis (freqAnal)
 * compare user's freqAnal w/ freqAnal of large spanish language corpus (stored on server)
-* 
+
+* We're generating a list of tf-idf scores for every word in spanish-language wikipedia
+* We look at the set of words in the articles our user has chosen then look at the tf-idf of those words and return the highest scoring
+
+
