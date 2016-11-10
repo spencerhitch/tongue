@@ -1,4 +1,4 @@
-import json, os, urllib, re, nltk, time
+import json, os, urllib, re, nltk, time, signal
 from bs4 import BeautifulSoup
 from urllib import parse
 
@@ -11,6 +11,11 @@ results["completed"] = []
 dictionary = results["dictionary"]
 num_documents = results["num_documents"]
 completed = results["completed"]
+
+def handler(signum, frame):
+    print('Signal handler called with signal', signum)
+    raise OSError("Couldn't open device!")
+
 
 def urlEncodeNonAscii(b):
     return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b.decode('utf-8'))
@@ -25,7 +30,10 @@ def getArticleContents(title):
     print("    # Trying URL: ", url, "#")
     while True:
         try:
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(10)
             html = urllib.request.urlopen(url).read().decode('utf8')
+            signal.alarm(0)
             break
         except urllib.error.HTTPError:
             return
@@ -61,7 +69,9 @@ with open('palabras.json', 'r') as f:
         dictionary = results["dictionary"]
         num_documents = results["num_documents"]
         completed = results["completed"]
+        print("Successfully loaded Palabras.json")
     except:
+        print("Failing to load palabras")
         pass
 
 print("Already completed: ", completed)
@@ -84,8 +94,8 @@ for filename in os.listdir(directory):
         print(" #### File complete: ", filename, "####")
         completed.append(filename)
 
-    # Write our newest results to the file and continue.
-    with open('palabras.json', 'w') as f:
-        json.dump(results, f)
-        print("##### Dumping to json #####")
+        # Write our newest results to the file and continue.
+        with open('palabras.json', 'w') as f:
+            json.dump(results, f)
+            print("##### Dumping to json #####")
 

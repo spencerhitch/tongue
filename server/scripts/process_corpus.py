@@ -1,6 +1,8 @@
 import nltk, json
 from nltk.corpus import cess_esp as es
-fd = nltk.FreqDist(es.words())
+
+words = [w.lower() for w in es.words() if w.isalpha()]
+fd = nltk.FreqDist(words)
 fd = fd.most_common()
 result = {}
 

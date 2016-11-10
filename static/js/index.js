@@ -71,13 +71,20 @@ $generateButton.click(function (e) {
     type: 'POST',
     success: function(r) {
       console.log(r);
-//      listGeneratedWords(r);
+      listGeneratedWords(JSON.parse(r));
     },
     error: function(e) {
       console.log(e);
     }
   });
 });
+
+function listGeneratedWords(words){
+  $("#results").empty();
+  for (var i = 0; i < words.length; i++) {
+    $("#results").append("<li>" + words[i][0] + "</li>");
+  }
+}
 
 var isMatchingTitle = function(title) {
   if (title.length > 0) return true;
